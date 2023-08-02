@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ViewEntryList extends StatefulWidget {
-  const ViewEntryList({super.key});
+class DeleteEntry extends StatefulWidget {
+  const DeleteEntry({super.key});
 
   @override
-  State<ViewEntryList> createState() => _ViewEntryListState();
+  State<DeleteEntry> createState() => _ViewDeleteEntryState();
 }
 
-class _ViewEntryListState extends State<ViewEntryList> {
+class _ViewDeleteEntryState extends State<DeleteEntry> {
 
   List<String> finalName = [];
 
@@ -25,7 +25,7 @@ class _ViewEntryListState extends State<ViewEntryList> {
         children: [
           const SizedBox(height: 100.0),
           const Text(
-            'Entry List',
+            'Delete Entry',
             style: TextStyle(
               fontSize: 30.0,
               fontWeight: FontWeight.bold,
@@ -37,19 +37,30 @@ class _ViewEntryListState extends State<ViewEntryList> {
               return Card(
                 color: Colors.blueGrey[800],
                 child: ListTile(
-                  title: Center(
-                    child: Text(finalName[index],
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 20.0,
+                    title: Center(
+                      child: Text(finalName[index],
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 20.0,
+                        ),
                       ),
                     ),
-                  )
+                  trailing: IconButton(
+                    onPressed: () async {
+                      var prefs = await SharedPreferences.getInstance();
+                      setState(() {
+                        prefs.remove('name_$index');
+                        finalName.removeAt(index);
+                      });
+                    },
+                    icon: const Icon(Icons.delete),
+                    color: Colors.grey[400],
+                ),
                 ),
               );
             },
-             itemCount: finalName.length),
+                itemCount: finalName.length),
           ),
         ],
       ),

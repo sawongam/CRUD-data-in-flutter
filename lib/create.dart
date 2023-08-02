@@ -2,10 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class CreateEntry extends StatelessWidget {
-  CreateEntry({super.key});
+class CreateEntry extends StatefulWidget {
+  const CreateEntry({super.key});
 
+  @override
+  State<CreateEntry> createState() => _CreateEntryState();
+}
+
+class _CreateEntryState extends State<CreateEntry> {
+
+  int counter = 0;
   var name = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    getCounter();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,20 +68,14 @@ class CreateEntry extends StatelessWidget {
                         if(name.text.isNotEmpty) {
                           var entryName = name.text;
                           SharedPreferences.getInstance().then((prefs) {
-                            prefs.setString('name', entryName);
+                            prefs.setString('name_$counter', entryName);
                             name.clear();
                             Fluttertoast.showToast(msg: 'Entry Created');
+                            counter++;
+                            prefs.setInt('counter', counter);
                           });
-
                         } else {
-                          Fluttertoast.showToast(
-                          msg: 'Name is required',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          backgroundColor: Colors.pink,
-                          textColor: Colors.white,
-                          fontSize: 16.0,
-                        );
+                          Fluttertoast.showToast(msg: 'Name is required');
                         }
                       },
                     ),
@@ -80,4 +87,13 @@ class CreateEntry extends StatelessWidget {
       ),
     );
   }
+
+  void getCounter() async {
+    var prefs = await SharedPreferences.getInstance();
+    setState(() {
+      counter = prefs.getInt('counter') ?? 0;
+    });
+  }
+
+
 }

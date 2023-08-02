@@ -1,3 +1,14 @@
+# STORE DATA LOCALLY IN FLUTTER:
+
+1. SharedPreferences: This is the easiest method to implement for a beginner. The shared_preferences package is straightforward and suitable for storing simple key-value pairs, such as user preferences or settings.
+
+2. Files: Working with files using the dart:io library is also relatively easy. You can read and write data to files in a specific format, like JSON or CSV. It's a good option for storing data that needs to be accessed directly from files.
+
+3. Hive: Hive is a beginner-friendly NoSQL database package written in pure Dart. It's relatively easy to set up and use, making it a good choice for small to medium-sized datasets.
+
+4. Local Database (SQLite): Using SQLite with the sqflite package is a bit more complex compared to the above methods. It involves working with relational databases and SQL queries. While it's not overly difficult, it requires understanding database concepts.
+
+
 # USING SHARED PREFERENCES:
 
 1. Store a value:
@@ -17,6 +28,13 @@ prefs.setString('name', entryName);
     }
 
   2.2 Create a getName() method:
+
+    void getCounter() async {
+        var prefs = await SharedPreferences.getInstance();
+        setState(() {
+          counter = prefs.getInt('counter') ?? 0;
+        });
+      }
 
     void getName() async {
     SharedPreferences.getInstance().then((prefs) {
@@ -47,13 +65,15 @@ prefs.setString('name', entryName);
     },
 
 
+* Storing data in key increment:
 
-# STORE DATA LOCALLY IN FLUTTER:
+Retrieve the current value of i from shared preferences (if it exists).
+Save the entered name with a key of name_i, where i is the current value of i.
+Increment the value of i by 1.
+Save the updated value of i back to shared preferences.
 
-1. SharedPreferences: This is the easiest method to implement for a beginner. The shared_preferences package is straightforward and suitable for storing simple key-value pairs, such as user preferences or settings.
-
-2. Files: Working with files using the dart:io library is also relatively easy. You can read and write data to files in a specific format, like JSON or CSV. It's a good option for storing data that needs to be accessed directly from files.
-
-3. Hive: Hive is a beginner-friendly NoSQL database package written in pure Dart. It's relatively easy to set up and use, making it a good choice for small to medium-sized datasets.
-
-4. Local Database (SQLite): Using SQLite with the sqflite package is a bit more complex compared to the above methods. It involves working with relational databases and SQL queries. While it's not overly difficult, it requires understanding database concepts.
+* Displaying the list from key increment:
+Retrieve the current value of i from shared preferences (if it exists).
+Loop through all the keys from name_0 to name_i-1.
+Retrieve each name from shared preferences using the corresponding key.
+Display the names in your app's UI.
