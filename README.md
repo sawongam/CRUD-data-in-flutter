@@ -23,12 +23,12 @@ I have exciting plans to enhance the app with more data storage options:
 
 ## Usage
 Clone the repository using the following command:
-- git clone https://github.com/your-username/crud-data-in-flutter.git
+- git clone https://github.com/sawongam/crud-data-in-flutter.git
 - Open the project in your favorite Flutter IDE (Android Studio, VS Code, etc.).
 - Run the app on your emulator or physical device.
 
 ## Contribution
-Any contributions to improve and expand the app's functionality is welcomed. If you find any bugs or have new ideas for features, feel free to create an issue or submit a pull request.
+Any contributions to improve and expand the app's functionality are welcomed. If you find any bugs or have new ideas for features, feel free to create an issue or submit a pull request.
 
 ## License
 
