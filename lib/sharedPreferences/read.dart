@@ -9,7 +9,6 @@ class ViewEntryList extends StatefulWidget {
 }
 
 class _ViewEntryListState extends State<ViewEntryList> {
-
   List<String> finalName = [];
 
   @override
@@ -33,23 +32,24 @@ class _ViewEntryListState extends State<ViewEntryList> {
           ),
           const SizedBox(height: 30.0),
           Expanded(
-            child: ListView.builder(itemBuilder: (context, index) {
-              return Card(
-                color: Colors.blueGrey[800],
-                child: ListTile(
-                  title: Center(
-                    child: Text(finalName[index],
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 20.0,
+            child: ListView.builder(
+                itemBuilder: (context, index) {
+                  return Card(
+                    color: Colors.blueGrey[800],
+                    child: ListTile(
+                        title: Center(
+                      child: Text(
+                        finalName[index],
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 20.0,
+                        ),
                       ),
-                    ),
-                  )
-                ),
-              );
-            },
-             itemCount: finalName.length),
+                    )),
+                  );
+                },
+                itemCount: finalName.length),
           ),
         ],
       ),
@@ -73,6 +73,4 @@ class _ViewEntryListState extends State<ViewEntryList> {
       }
     });
   }
-
-
 }

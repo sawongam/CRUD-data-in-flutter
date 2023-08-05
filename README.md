@@ -2,7 +2,7 @@
 
 ![Flutter](https://img.shields.io/badge/Language-Dart-red.svg) 
 ![Status](https://img.shields.io/badge/Status-Incomplete-orange.svg)
-![Version](https://img.shields.io/badge/Version-1.0-blue.svg)
+![Version](https://img.shields.io/badge/Version-2.0-blue.svg)
 
 A simple Flutter app that demonstrates CRUD (Create, Read, Update, Delete) operations using shared preferences. It allows users to perform basic data management tasks, such as adding, viewing, updating, and deleting data locally using shared preferences.
 
