@@ -65,18 +65,7 @@ class _CreateEntryState extends State<CreateEntry> {
                         color: Colors.white,
                       ),
                       onPressed: () {
-                        if(name.text.isNotEmpty) {
-                          var entryName = name.text;
-                          SharedPreferences.getInstance().then((prefs) {
-                            prefs.setString('name_$counter', entryName);
-                            name.clear();
-                            Fluttertoast.showToast(msg: 'Entry Created');
-                            counter++;
-                            prefs.setInt('counter', counter);
-                          });
-                        } else {
-                          Fluttertoast.showToast(msg: 'Name is required');
-                        }
+                        createList();
                       },
                     ),
                   ),
@@ -94,6 +83,21 @@ class _CreateEntryState extends State<CreateEntry> {
       counter = prefs.getInt('counter') ?? 0;
     });
   }
+
+   createList() {
+     if(name.text.isNotEmpty) {
+       var entryName = name.text;
+       SharedPreferences.getInstance().then((prefs) {
+         prefs.setString('name_$counter', entryName);
+         name.clear();
+         Fluttertoast.showToast(msg: 'Entry Created');
+         counter++;
+         prefs.setInt('counter', counter);
+       });
+     } else {
+       Fluttertoast.showToast(msg: 'Name is required');
+     }
+   }
 
 
 }

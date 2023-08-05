@@ -64,7 +64,12 @@ class _ViewEntryListState extends State<ViewEntryList> {
         finalName.add('No Entries');
       }
       for (int i = 0; i < count; i++) {
-        finalName.add(prefs.getString('name_$i') ?? 'No Value');
+        String? list = prefs.getString('name_$i');
+        if (list != null) {
+          finalName.add(prefs.getString('name_$i') ?? 'No Value');
+        } else {
+          continue;
+        }
       }
     });
   }

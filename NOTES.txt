@@ -77,3 +77,5 @@ Retrieve the current value of i from shared preferences (if it exists).
 Loop through all the keys from name_0 to name_i-1.
 Retrieve each name from shared preferences using the corresponding key.
 Display the names in your app's UI.
+
+

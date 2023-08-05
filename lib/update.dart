@@ -10,107 +10,117 @@ class UpdateEntry extends StatefulWidget {
 }
 
 class _UpdateEntryState extends State<UpdateEntry> {
-   var name = TextEditingController();
-   var currentName = '';
 
-   @override
-   void initState() {
-     super.initState();
-     getName();
-   }
-   
+  List<String> finalName = [];
+  var updateData = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    getName();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Update Entry',
-              style: TextStyle(
-                fontSize: 30.0,
-                fontWeight: FontWeight.bold,
-              ),
+      body: Column(
+        children: [
+          const SizedBox(height: 100.0),
+          const Text(
+            'Update Entry',
+            style: TextStyle(
+              fontSize: 30.0,
+              fontWeight: FontWeight.bold,
             ),
-            const SizedBox(height: 90.0),
-            SizedBox(
-              width: 340,
-              child: TextField(
-                controller: name,
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.white,
+          ),
+          const SizedBox(height: 30.0),
+          Expanded(
+            child: ListView.builder(itemBuilder: (context, index) {
+              return Card(
+                color: Colors.blueGrey[800],
+                child: ListTile(
+                  title: Center(
+                    child: Text(finalName[index],
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 20.0,
+                      ),
                     ),
-                    borderRadius: BorderRadius.circular(36.0),
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.white,
-                    ),
-                    borderRadius: BorderRadius.circular(36.0),
-                  ),
-                  labelText: 'Updated Name',
-                  labelStyle: const TextStyle(
-                    color: Colors.white,
-                  ),
-                  suffixIcon: IconButton(
-                    icon: const Icon(
-                      Icons.arrow_forward,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      if(name.text.isNotEmpty) {
-                        var entryName = name.text;
-                        if (entryName == currentName) {
-                          Fluttertoast.showToast(
-                            msg: 'Updated Name is same as Current Name',
-                          );
-                          return;
-                        } else {
-                          SharedPreferences.getInstance().then((prefs) {
-                            prefs.setString('name', entryName);
-                            name.clear();
-                            Fluttertoast.showToast(msg: 'Entry Updated');
-                          });
-                        }
-                      } else {
-                        Fluttertoast.showToast(
-                          msg: 'Updated Name is required',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          backgroundColor: Colors.pink,
-                          textColor: Colors.white,
-                          fontSize: 16.0,
-                        );
-                      }
+                  trailing: IconButton(
+                    onPressed: () async {
+                      updateList(index);
                     },
+                    icon: const Icon(Icons.edit),
+                    color: Colors.grey[400],
                   ),
                 ),
-              ),
-            ),
-          ],
-        ),
+              );
+            },
+                itemCount: finalName.length),
+          ),
+        ],
       ),
     );
   }
 
-   void getName() async {
-     SharedPreferences.getInstance().then((prefs) {
-       var fName = prefs.getString('name');
-       if (fName != null) {
-         setState(() {
-           currentName = fName;
-         });
-       } else {
-         setState(() {
-           currentName = 'No Entry Found';
-         });
-       }
-     });
-   }
+  void getName() async {
+    var prefs = await SharedPreferences.getInstance();
+    setState(() {
+      int count = prefs.getInt('counter') ?? -1;
+      if (count == -1) {
+        return;
+      }
+      for (int i = 0; i < count; i++) {
+        String? list = prefs.getString('name_$i');
+        if (list == null) {
+          continue;
+        } else {
+          finalName.add(prefs.getString('name_$i') ?? 'No Value');
+        }
+      }
+    });
+  }
+
+  updateList(int index) async {
+    // var prefs = await SharedPreferences.getInstance();
+    // prefs.setString('name_$index', "Replaced");
+    // setState(() {
+    // finalName[index] = "Replaced";
+    // });
+    showDialog(
+      context: context,
+      builder: (context) =>
+          AlertDialog(
+            title: const Text('Update Entry'),
+            content: TextFormField(
+              controller: updateData,
+              decoration: const InputDecoration(
+                hintText: 'Enter updated Entry',
+              ),
+            ),
+            actions: [
+              ElevatedButton(
+                onPressed:() async {
+                if (updateData.text.isNotEmpty) {
+                  var prefs = await SharedPreferences.getInstance();
+                  prefs.setString('name_$index', updateData.text);
+                  setState(() {
+                    finalName[index] = updateData.text;
+                  });
+                  updateData.clear();
+                  Fluttertoast.showToast(msg: "Entry Updated");
+                  Navigator.pop(context);
+                } else {
+                  Fluttertoast.showToast(msg: "Please enter a value");
+                }
+              },
+                  child: const Text("Update"))
+            ],
+          ),
+
+    );
+  }
+
 }

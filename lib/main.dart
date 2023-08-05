@@ -119,7 +119,7 @@ class Home extends StatelessWidget {
         AlertDialog(
           title: const Text('Delete Entry'),
           content: const Text(
-              'Are you sure you want to delete current entry?'),
+              'Are you sure you want to delete all entries?'),
           actions: [
             TextButton(
               onPressed: () async {
