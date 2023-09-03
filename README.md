@@ -1,4 +1,4 @@
-# CRUD data in flutter: [sharedPreferences, files, hive, sqlite]
+# CRUD data in flutter: [sharedPreferences, JSON, sqlite]
 
 ![Flutter](https://img.shields.io/badge/Language-Dart-red.svg) 
 ![Status](https://img.shields.io/badge/Status-Incomplete-orange.svg)
