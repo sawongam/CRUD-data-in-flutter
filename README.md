@@ -19,8 +19,6 @@ I have exciting plans to enhance the app with more data storage options:
 
 - SQLite Integration: The app will incorporate SQLite for efficient and structured database storage.
 
-- Hive Integration: I plan to integrate Hive, a lightweight and fast NoSQL database, for added flexibility.
-
 ## Usage
 Clone the repository using the following command:
 - git clone https://github.com/sawongam/crud-data-in-flutter.git
