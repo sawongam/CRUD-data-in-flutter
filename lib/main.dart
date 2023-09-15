@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:crud_data/JSON/home.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
+import 'JSON/json_logics.dart';
 import 'menu.dart';
 
 void main() {
   runApp(const MyApp());
+  initializeJSON();
 }
 
 class MyApp extends StatelessWidget {

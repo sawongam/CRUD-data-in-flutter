@@ -34,6 +34,7 @@ dependencies:
   shared_preferences: ^2.2.0 #store data in device local storage.
   fluttertoast: ^8.2.2 #show toast message.
   url_launcher: ^6.1.14
+  path_provider: ^2.1.1
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class JsonHome extends StatefulWidget {
@@ -12,8 +14,13 @@ class JsonHome extends StatefulWidget {
 }
 
 class _JsonHomeState extends State<JsonHome> {
-  List _contacts = [];
-  List<bool> _showOptions = []; // List to track visibility of options for each contact
+  List contactsList = [];
+  List<bool> _showOptions =
+      []; // List to track visibility of options for each contact
+  var nameUp = TextEditingController();
+  var phoneUp = TextEditingController();
+  var nameCrt = TextEditingController();
+  var phoneCrt = TextEditingController();
 
   @override
   void initState() {
@@ -26,7 +33,7 @@ class _JsonHomeState extends State<JsonHome> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          _showOptions = List.generate(_contacts.length, (index) => false);
+          _showOptions = List.generate(contactsList.length, (index) => false);
         });
       },
       child: Scaffold(
@@ -46,7 +53,7 @@ class _JsonHomeState extends State<JsonHome> {
                 const SizedBox(height: 50),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: _contacts.length,
+                    itemCount: contactsList.length,
                     itemBuilder: (context, index) {
                       return Card(
                         color: Colors.blueGrey[800],
@@ -56,7 +63,8 @@ class _JsonHomeState extends State<JsonHome> {
                               onTap: () {
                                 // Toggle visibility of options when tapping on a contact
                                 setState(() {
-                                  _showOptions = List.generate(_contacts.length, (index) => false);
+                                  _showOptions = List.generate(
+                                      contactsList.length, (index) => false);
                                   _showOptions[index] = !_showOptions[index];
                                 });
                               },
@@ -66,14 +74,14 @@ class _JsonHomeState extends State<JsonHome> {
                                 color: Colors.white60,
                               ),
                               title: Text(
-                                _contacts[index]['name'],
+                                contactsList[index]['name'],
                                 style: const TextStyle(
                                   color: Colors.white70,
                                   fontSize: 22,
                                 ),
                               ),
                               subtitle: Text(
-                                _contacts[index]['phone'],
+                                contactsList[index]['phone'],
                                 style: const TextStyle(
                                   color: Colors.white54,
                                   fontSize: 15,
@@ -92,7 +100,8 @@ class _JsonHomeState extends State<JsonHome> {
                                   children: [
                                     IconButton(
                                       onPressed: () {
-                                        makePhoneCall('tel:${_contacts[index]['phone']}');
+                                        makePhoneCall(
+                                            'tel:${contactsList[index]['phone']}');
                                       },
                                       padding: const EdgeInsets.all(0),
                                       splashRadius: 25,
@@ -102,7 +111,9 @@ class _JsonHomeState extends State<JsonHome> {
                                       ),
                                     ),
                                     IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        updateJson(index);
+                                      },
                                       padding: const EdgeInsets.all(0),
                                       splashRadius: 25,
                                       icon: const Icon(
@@ -111,7 +122,9 @@ class _JsonHomeState extends State<JsonHome> {
                                       ),
                                     ),
                                     IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        deleteJson(index);
+                                      },
                                       padding: const EdgeInsets.all(0),
                                       splashRadius: 25,
                                       icon: const Icon(
@@ -133,24 +146,174 @@ class _JsonHomeState extends State<JsonHome> {
             ),
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.blueGrey[800],
+          child: const Icon(Icons.add),
+          onPressed: () {
+            addJson();
+          },
+        ),
       ),
     );
   }
 
   void readJSON() async {
-    String pathJson = 'assets/json.json';
-    String parsedJson = await rootBundle.loadString(pathJson);
-    final decodedJson = jsonDecode(parsedJson);
+    final Directory? appDir = await getDownloadsDirectory();
+    final File file = File('${appDir?.path}/contacts.json');
+    String parsedJson = await file.readAsString();
     setState(() {
-      _contacts = decodedJson['contacts'];
-      _showOptions = List.generate(_contacts.length, (index) => false);
+      contactsList = jsonDecode(parsedJson);
+      _showOptions = List.generate(contactsList.length, (index) => false);
     });
+  }
+
+  void callJson() async {
+    final Directory? appDirectory = await getDownloadsDirectory();
+    final File file = File('${appDirectory?.path}/contacts.json');
+    String reParsedJson = jsonEncode(contactsList);
+    await file.writeAsString(reParsedJson);
   }
 
   void makePhoneCall(String tel) {
     setState(() {
-      print(tel);
       launchUrl(Uri.parse(tel));
     });
+  }
+
+  void updateJson(int index) {
+    nameUp.text = '${contactsList[index]['name']}';
+    phoneUp.text = '${contactsList[index]['phone']}';
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.blueGrey[800],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        title: const Align(
+            alignment: Alignment.center,
+            child: Text(
+              'Update Contact',
+              style: TextStyle(color: Colors.white),
+            )),
+        content: SizedBox(
+          height: 130,
+          child: Column(
+            children: [
+              TextField(
+                controller: nameUp,
+                style: const TextStyle(color: Colors.white),
+                decoration: const InputDecoration(
+                  labelText: 'Name',
+                  labelStyle: TextStyle(color: Colors.white),
+                ),
+              ),
+              TextField(
+                controller: phoneUp,
+                style: const TextStyle(color: Colors.white),
+                decoration: const InputDecoration(
+                  labelText: 'Phone No.',
+                  labelStyle: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          ElevatedButton(
+              onPressed: () async {
+                if (nameUp.text.isNotEmpty && phoneUp.text.isNotEmpty) {
+                  setState(() {
+                    contactsList[index]['name'] = nameUp.text;
+                    contactsList[index]['phone'] = phoneUp.text;
+                  });
+                  callJson();
+                  Navigator.pop(context);
+                } else {
+                  Fluttertoast.showToast(msg: "Please enter a value");
+                }
+              },
+              child: const Align(
+                  // alignment: Alignment.center,
+                  child: Text(
+                "Update",
+              ))),
+        ],
+      ),
+    );
+  }
+
+  void deleteJson(int index) async {
+    setState(() {
+      contactsList.removeAt(index);
+    });
+    callJson();
+  }
+
+  void addJson() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.blueGrey[800],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        title: const Align(
+            alignment: Alignment.center,
+            child: Text(
+              'Create Contact',
+              style: TextStyle(color: Colors.white),
+            )),
+        content: SizedBox(
+          height: 130,
+          child: Column(
+            children: [
+              TextField(
+                controller: nameCrt,
+                style: const TextStyle(color: Colors.white),
+                decoration: const InputDecoration(
+                  labelText: 'Name',
+                  labelStyle: TextStyle(color: Colors.white),
+                ),
+              ),
+              TextField(
+                controller: phoneCrt,
+                keyboardType: TextInputType.number,
+                style: const TextStyle(color: Colors.white),
+                decoration: const InputDecoration(
+                  labelText: 'Phone No.',
+                  labelStyle: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          ElevatedButton(
+              onPressed: () async {
+                if (nameCrt.text.isNotEmpty && phoneCrt.text.isNotEmpty) {
+                  setState(() {
+                    contactsList.add({
+                      "name": nameCrt.text,
+                      "phone": phoneCrt.text,
+                    });
+                    callJson();
+                    readJSON();
+                    nameCrt.clear();
+                    phoneCrt.clear();
+                  });
+                  Navigator.pop(context);
+                } else {
+                  Fluttertoast.showToast(msg: "Please enter a value");
+                }
+              },
+              child: const Align(
+                  // alignment: Alignment.center,
+                  child: Text(
+                "Create",
+              ))),
+        ],
+      ),
+    );
   }
 }
