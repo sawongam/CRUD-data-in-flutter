@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const JsonHome(),
+      home: const MainHome(),
       // home: const MainHome(),
     );
   }
