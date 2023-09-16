@@ -4,7 +4,7 @@
 ![Status](https://img.shields.io/badge/Status-Incomplete-orange.svg)
 ![Version](https://img.shields.io/badge/Version-2.0-blue.svg)
 
-A simple Flutter app that demonstrates CRUD (Create, Read, Update, Delete) operations using shared preferences. It allows users to perform basic data management tasks, such as adding, viewing, updating, and deleting data locally using shared preferences.
+A simple Flutter app that demonstrates CRUD (Create, Read, Update, Delete) operations using shared preferences and JSON. It allows users to perform basic data management tasks, such as adding, viewing, updating, and deleting data locally using shared preferences, and manage contacts by adding, viewing, updating, and deleting contact information using JSON.
 
 ## Features
 - Create: Add new data entries to the app.
@@ -14,8 +14,6 @@ A simple Flutter app that demonstrates CRUD (Create, Read, Update, Delete) opera
 
 ## Upcoming Features
 I have exciting plans to enhance the app with more data storage options:
-
-- Local File Support: Users will be able to store data in local files like .txt or .json for more persistent storage.
 
 - SQLite Integration: The app will incorporate SQLite for efficient and structured database storage.
 
