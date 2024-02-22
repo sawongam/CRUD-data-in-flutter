@@ -9,7 +9,6 @@ class DeleteEntry extends StatefulWidget {
 }
 
 class _ViewDeleteEntryState extends State<DeleteEntry> {
-
   List<String> finalName = [];
 
   @override
@@ -33,29 +32,31 @@ class _ViewDeleteEntryState extends State<DeleteEntry> {
           ),
           const SizedBox(height: 30.0),
           Expanded(
-            child: ListView.builder(itemBuilder: (context, index) {
-              return Card(
-                color: Colors.blueGrey[800],
-                child: ListTile(
-                    title: Center(
-                      child: Text(finalName[index],
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 20.0,
+            child: ListView.builder(
+                itemBuilder: (context, index) {
+                  return Card(
+                    color: Colors.blueGrey[800],
+                    child: ListTile(
+                      title: Center(
+                        child: Text(
+                          finalName[index],
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 20.0,
+                          ),
                         ),
                       ),
+                      trailing: IconButton(
+                        onPressed: () async {
+                          deleteList(index);
+                        },
+                        icon: const Icon(Icons.delete),
+                        color: Colors.grey[400],
+                      ),
                     ),
-                  trailing: IconButton(
-                    onPressed: () async {
-                      deleteList(index);
-                    },
-                    icon: const Icon(Icons.delete),
-                    color: Colors.grey[400],
-                ),
-                ),
-              );
-            },
+                  );
+                },
                 itemCount: finalName.length),
           ),
         ],
@@ -81,7 +82,7 @@ class _ViewDeleteEntryState extends State<DeleteEntry> {
     });
   }
 
-deleteList(int index) async {
+  deleteList(int index) async {
     var prefs = await SharedPreferences.getInstance();
     prefs.remove('name_$index');
     setState(() {
@@ -104,7 +105,5 @@ deleteList(int index) async {
 
     // Update the counter in SharedPreferences to reflect the updated list length
     prefs.setInt('counter', finalName.length);
-}
-
-
+  }
 }

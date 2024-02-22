@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'JSON/home.dart';
 import 'Shared Preferences/home.dart';
+import 'Sqflite/home.dart';
 
 class MainHome extends StatelessWidget {
   const MainHome({super.key});
@@ -58,7 +59,9 @@ class MainHome extends StatelessWidget {
               color: Colors.blueGrey[700],
               child: ListTile(
                 onTap: () {
-                  Fluttertoast.showToast(msg: "Coming Soon!");
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const SqfliteHome();
+                  }));
                 },
                 title: Text(
                   'Sqlite',

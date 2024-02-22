@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
       title: 'CRUD',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        useMaterial3: false,
         primarySwatch: Colors.blue,
         // scaffoldBackgroundColor: Colors.black12,
         scaffoldBackgroundColor: Colors.blueGrey[900],

@@ -10,7 +10,6 @@ class CreateEntry extends StatefulWidget {
 }
 
 class _CreateEntryState extends State<CreateEntry> {
-
   int counter = 0;
   var name = TextEditingController();
 
@@ -42,33 +41,33 @@ class _CreateEntryState extends State<CreateEntry> {
                 style: const TextStyle(
                   color: Colors.white,
                 ),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: Colors.white,
-                      ),
-                      borderRadius: BorderRadius.circular(36.0),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: Colors.white,
-                      ),
-                      borderRadius: BorderRadius.circular(36.0),
-                    ),
-                    labelText: 'Name',
-                    labelStyle: const TextStyle(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderSide: const BorderSide(
                       color: Colors.white,
                     ),
-                    suffixIcon: IconButton(
-                      icon: const Icon(
-                        Icons.arrow_forward,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        createList();
-                      },
-                    ),
+                    borderRadius: BorderRadius.circular(36.0),
                   ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                    ),
+                    borderRadius: BorderRadius.circular(36.0),
+                  ),
+                  labelText: 'Name',
+                  labelStyle: const TextStyle(
+                    color: Colors.white,
+                  ),
+                  suffixIcon: IconButton(
+                    icon: const Icon(
+                      Icons.arrow_forward,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      createList();
+                    },
+                  ),
+                ),
               ),
             ),
           ],
@@ -84,20 +83,18 @@ class _CreateEntryState extends State<CreateEntry> {
     });
   }
 
-   createList() {
-     if(name.text.isNotEmpty) {
-       var entryName = name.text;
-       SharedPreferences.getInstance().then((prefs) {
-         prefs.setString('name_$counter', entryName);
-         name.clear();
-         Fluttertoast.showToast(msg: 'Entry Created');
-         counter++;
-         prefs.setInt('counter', counter);
-       });
-     } else {
-       Fluttertoast.showToast(msg: 'Name is required');
-     }
-   }
-
-
+  createList() {
+    if (name.text.isNotEmpty) {
+      var entryName = name.text;
+      SharedPreferences.getInstance().then((prefs) {
+        prefs.setString('name_$counter', entryName);
+        name.clear();
+        Fluttertoast.showToast(msg: 'Entry Created');
+        counter++;
+        prefs.setInt('counter', counter);
+      });
+    } else {
+      Fluttertoast.showToast(msg: 'Name is required');
+    }
+  }
 }

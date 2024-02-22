@@ -35,6 +35,8 @@ dependencies:
   fluttertoast: ^8.2.2 #show toast message.
   url_launcher: ^6.1.14
   path_provider: ^2.1.1
+  sqflite: ^2.3.2
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
